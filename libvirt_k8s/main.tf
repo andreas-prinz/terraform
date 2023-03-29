@@ -72,3 +72,13 @@ module "workers" {
   source_image        = "/opt/qemu/images/debian-sid-genericcloud-amd64-daily.qcow2"
   ssh_public_key_path = "/opt/qemu/ssh/id_rsa.pub"
 }
+
+resource "local_file" "inventory_file" {
+  content = templatefile("${path.module}/templ/inventory.cfg",
+    {
+      masrers = module.masrers
+      workers = module.workers
+    }
+  )
+  filename = ./inventory.ini
+}
